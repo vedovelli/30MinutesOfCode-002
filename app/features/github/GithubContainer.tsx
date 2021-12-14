@@ -1,22 +1,3 @@
-import { Outlet } from "remix";
-import { User } from "./types";
-
-export interface GithubContainerProps {
-  user: User;
-}
-
-export function GithubContainer({ user }: GithubContainerProps) {
-  return (
-    <>
-      <h1>{user.login}</h1>
-      <blockquote>{user.bio}</blockquote>
-      <img src={user.avatar_url} alt={user.login} width="150" />
-      <hr />
-      <Outlet />
-    </>
-  );
-}
-
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
@@ -29,46 +10,17 @@ import {
   StarIcon,
 } from "@heroicons/react/solid";
 import { MenuAlt1Icon, XIcon } from "@heroicons/react/outline";
+import { Outlet } from "remix";
+import { User, Repo } from "./types";
+import { classNames } from "~/util";
+import { activityItems, navigation, projects, userNavigation } from "./util";
 
-const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Domains", href: "#", current: false },
-];
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
-];
-const projects = [
-  {
-    name: "Workcation",
-    href: "#",
-    siteHref: "#",
-    repoHref: "#",
-    repo: "debbielewis/workcation",
-    tech: "Laravel",
-    lastDeploy: "3h ago",
-    location: "United states",
-    starred: true,
-    active: true,
-  },
-  // More projects...
-];
-const activityItems = [
-  {
-    project: "Workcation",
-    commit: "2d89f0c8",
-    environment: "production",
-    time: "1h",
-  },
-  // More items...
-];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+export interface GithubContainerProps {
+  user: User;
+  repos: Repo[];
 }
 
-export default function Example() {
+export function GithubContainer({ user, repos }: GithubContainerProps) {
   return (
     <>
       <div
@@ -153,8 +105,8 @@ export default function Example() {
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="h-8 w-8 rounded-full"
-                              src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&h=256&q=80"
-                              alt=""
+                              src={user.avatar_url}
+                              alt={user.login}
                             />
                           </Menu.Button>
                         </div>
@@ -244,13 +196,13 @@ export default function Example() {
                         <div className="flex-shrink-0 h-12 w-12">
                           <img
                             className="h-12 w-12 rounded-full"
-                            src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&h=256&q=80"
-                            alt=""
+                            src={user.avatar_url}
+                            alt={user.login}
                           />
                         </div>
                         <div className="space-y-1">
                           <div className="text-sm font-medium text-gray-900">
-                            Debbie Lewis
+                            {user.login}
                           </div>
                           <a
                             href="#"
@@ -269,7 +221,7 @@ export default function Example() {
                               />
                             </svg>
                             <span className="text-sm text-gray-500 group-hover:text-gray-900 font-medium">
-                              debbielewis
+                              github/{user.login}
                             </span>
                           </a>
                         </div>
@@ -307,7 +259,7 @@ export default function Example() {
                           aria-hidden="true"
                         />
                         <span className="text-sm text-gray-500 font-medium">
-                          8 Projects
+                          {repos.length} Projects
                         </span>
                       </div>
                     </div>
@@ -389,9 +341,9 @@ export default function Example() {
                 role="list"
                 className="relative z-0 divide-y divide-gray-200 border-b border-gray-200"
               >
-                {projects.map((project) => (
+                {repos.map((repo) => (
                   <li
-                    key={project.repo}
+                    key={repo.id}
                     className="relative pl-4 pr-6 py-5 hover:bg-gray-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6"
                   >
                     <div className="flex items-center justify-between space-x-4">
@@ -399,37 +351,26 @@ export default function Example() {
                       <div className="min-w-0 space-y-3">
                         <div className="flex items-center space-x-3">
                           <span
-                            className={classNames(
-                              project.active ? "bg-green-100" : "bg-gray-100",
-                              "h-4 w-4 rounded-full flex items-center justify-center"
-                            )}
+                            className="bg-green-100 h-4 w-4 rounded-full flex items-center justify-center"
                             aria-hidden="true"
                           >
-                            <span
-                              className={classNames(
-                                project.active ? "bg-green-400" : "bg-gray-400",
-                                "h-2 w-2 rounded-full"
-                              )}
-                            />
+                            <span className="bg-green-400 h-2 w-2 rounded-full" />
                           </span>
 
                           <span className="block">
                             <h2 className="text-sm font-medium">
-                              <a href={project.href}>
+                              <a href="#">
                                 <span
                                   className="absolute inset-0"
                                   aria-hidden="true"
                                 />
-                                {project.name}{" "}
-                                <span className="sr-only">
-                                  {project.active ? "Running" : "Not running"}
-                                </span>
+                                {repo.full_name}{" "}
                               </a>
                             </h2>
                           </span>
                         </div>
                         <a
-                          href={project.repoHref}
+                          href="#"
                           className="relative group flex items-center space-x-2.5"
                         >
                           <svg
@@ -447,7 +388,7 @@ export default function Example() {
                             />
                           </svg>
                           <span className="text-sm text-gray-500 group-hover:text-gray-900 font-medium truncate">
-                            {project.repo}
+                            {repo.full_name}
                           </span>
                         </a>
                       </div>
@@ -461,7 +402,7 @@ export default function Example() {
                       <div className="hidden sm:flex flex-col flex-shrink-0 items-end space-y-3">
                         <p className="flex items-center space-x-4">
                           <a
-                            href={project.siteHref}
+                            href={repo.html_url}
                             className="relative text-sm text-gray-500 hover:text-gray-900 font-medium"
                           >
                             Visit site
@@ -470,28 +411,19 @@ export default function Example() {
                             type="button"
                             className="relative bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                           >
-                            <span className="sr-only">
-                              {project.starred
-                                ? "Add to favorites"
-                                : "Remove from favorites"}
-                            </span>
-                            <StarIcon
-                              className={classNames(
-                                project.starred
-                                  ? "text-yellow-300 hover:text-yellow-400"
-                                  : "text-gray-300 hover:text-gray-400",
-                                "h-5 w-5"
-                              )}
-                              aria-hidden="true"
-                            />
+                            <div className="flex">
+                              {repo.stargazers_count}
+                              <StarIcon
+                                className="h-5 w-5 text-yellow-300 hover:text-yellow-400"
+                                aria-hidden="true"
+                              />
+                            </div>
                           </button>
                         </p>
                         <p className="flex text-gray-500 text-sm space-x-2">
-                          <span>{project.tech}</span>
+                          <span>{repo.language}</span>
                           <span aria-hidden="true">&middot;</span>
-                          <span>Last deploy {project.lastDeploy}</span>
-                          <span aria-hidden="true">&middot;</span>
-                          <span>{project.location}</span>
+                          <span>Berlin</span>
                         </p>
                       </div>
                     </div>
@@ -502,44 +434,7 @@ export default function Example() {
           </div>
           {/* Activity feed */}
           <div className="bg-gray-50 pr-4 sm:pr-6 lg:pr-8 lg:flex-shrink-0 lg:border-l lg:border-gray-200 xl:pr-0">
-            <div className="pl-6 lg:w-80">
-              <div className="pt-6 pb-2">
-                <h2 className="text-sm font-semibold">Activity</h2>
-              </div>
-              <div>
-                <ul role="list" className="divide-y divide-gray-200">
-                  {activityItems.map((item) => (
-                    <li key={item.commit} className="py-4">
-                      <div className="flex space-x-3">
-                        <img
-                          className="h-6 w-6 rounded-full"
-                          src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&h=256&q=80"
-                          alt=""
-                        />
-                        <div className="flex-1 space-y-1">
-                          <div className="flex items-center justify-between">
-                            <h3 className="text-sm font-medium">You</h3>
-                            <p className="text-sm text-gray-500">{item.time}</p>
-                          </div>
-                          <p className="text-sm text-gray-500">
-                            Deployed {item.project} ({item.commit} in master) to{" "}
-                            {item.environment}
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-                <div className="py-4 text-sm border-t border-gray-200">
-                  <a
-                    href="#"
-                    className="text-indigo-600 font-semibold hover:text-indigo-900"
-                  >
-                    View all activity <span aria-hidden="true">&rarr;</span>
-                  </a>
-                </div>
-              </div>
-            </div>
+            <Outlet />
           </div>
         </div>
       </div>
