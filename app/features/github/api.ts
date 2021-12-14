@@ -4,7 +4,7 @@ import { Repo } from ".";
 const config = {
   headers: {
     accept: "application/vnd.github.v3+json",
-    Authorization: "token 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",
+    Authorization: `token ${process.env.GITHUB_API_TOKEN}`,
   },
 };
 
