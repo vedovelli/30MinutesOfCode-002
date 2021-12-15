@@ -1,11 +1,12 @@
 import invariant from "tiny-invariant";
 import pick from "lodash/pick";
 import { Types } from ".";
+import { secrets } from "../../../secrets";
 
 const config = {
   headers: {
     accept: "application/vnd.github.v3+json",
-    Authorization: `token `,
+    Authorization: `token ${secrets.GITHUB_API_TOKEN}`,
   },
 };
 

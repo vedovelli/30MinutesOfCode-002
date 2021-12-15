@@ -11,6 +11,10 @@ export const loader: LoaderFunction = async ({
   };
 };
 
+export function ErrorBoundary() {
+  return <h3>Whoops. Something went wrong [Commits]</h3>;
+}
+
 export default function () {
   const { user, commits } = useLoaderData<Types.Commits.LoaderData>();
   return <Commits commits={commits} user={user} />;
