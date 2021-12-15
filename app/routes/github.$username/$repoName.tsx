@@ -1,8 +1,8 @@
 import { LoaderFunction, useLoaderData } from "remix";
-import { getCommits } from "~/features/github/api";
+import { GithubApi } from "~/features/github";
 
 export const loader: LoaderFunction = async ({ params }) => {
-  return await getCommits(params.repoName);
+  return await GithubApi.getCommits(params.reponame, params.username);
 };
 
 // export default function () {
