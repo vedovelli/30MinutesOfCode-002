@@ -5,7 +5,7 @@ import { Types } from ".";
 const config = {
   headers: {
     accept: "application/vnd.github.v3+json",
-    Authorization: `token ${process.env.GITHUB_API_TOKEN}`,
+    Authorization: `token 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`,
   },
 };
 
@@ -37,7 +37,10 @@ export const getUserRepos = async (username?: string) => {
   );
 };
 
-export const getCommits = async (reponame?: string, username?: string) => {
+export const getCommits = async (
+  reponame?: string,
+  username?: string
+): Promise<Types.Commits.Commit[]> => {
   invariant(reponame, "Please provide an repository name as a string");
   invariant(username, "Please provide an user name as a string");
 
@@ -46,5 +49,9 @@ export const getCommits = async (reponame?: string, username?: string) => {
     config
   );
 
-  return await res.json();
+  return (await res.json()).map((commit: Types.Commits.ApiResponse) => ({
+    sha: commit.sha,
+    message: commit.commit.message,
+    hmtl_url: commit.html_url,
+  }));
 };
