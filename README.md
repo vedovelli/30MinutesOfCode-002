@@ -1,4 +1,29 @@
-# Welcome to Remix!
+# 30 Minutes of Code - Season 2 - Remix.run
+
+Este repositório contém uma aplicação desenvolvida com [Remix.run](https://remix.run) e oferece o código fonte criado nos vídeos.
+
+As instruções de instalação estão abaixo. O único cuidado que você precisa ter para que a aplicação rode sem problemas é comentar este trecho de código em `/app/features/Github/Github.api.ts`
+
+```typescript
+const config = {
+  headers: {
+    accept: "application/vnd.github.v3+json",
+    // Authorization: `token ${secrets.GITHUB_API_TOKEN}`, // < esta linha deve ser comentada
+  },
+};
+```
+
+Ou então [crie seu próprio token no Github](https://github.com/settings/tokens) e adicione num arquivo `secrets.ts` (precisa ser criado) na raiz do projeto!
+
+```typscript
+export const secrets = {
+  GITHUB_API_TOKEN: "ghp_seu token aqui",
+};
+```
+
+Neste caso mantenha o código em `/app/features/Github/Github.api.ts` intocado!
+
+## Welcome to Remix!
 
 - [Remix Docs](https://remix.run/docs)
 
