@@ -6,7 +6,7 @@ export const loader: LoaderFunction = async ({
   params,
 }): Promise<Types.Commits.LoaderData> => {
   return {
-    user: await GithubApi.getGithubUser(params.username),
+    user: await GithubApi.getUser(params.username),
     commits: await GithubApi.getCommits(params.reponame, params.username),
   };
 };

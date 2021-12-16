@@ -15,17 +15,19 @@ export function Commits({ commits, user }: CommitsProps) {
         <ul role="list" className="divide-y divide-gray-200">
           {commits.map((commit) => (
             <li key={commit.sha} className="py-4">
-              <div className="flex space-x-3">
-                <img
-                  className="h-6 w-6 rounded-full"
-                  src={user.avatar_url}
-                  alt={user.login}
-                />
-                <div className="flex-1 space-y-1">
-                  <h3 className="text-sm font-medium">{user.login}</h3>
-                  <p className="text-sm text-gray-500">{commit.message}</p>
+              <a href={commit.html_url} target="_blank">
+                <div className="flex space-x-3">
+                  <img
+                    className="h-6 w-6 rounded-full"
+                    src={user.avatar_url}
+                    alt={user.login}
+                  />
+                  <div className="flex-1 space-y-1">
+                    <h3 className="text-sm font-medium">{user.login}</h3>
+                    <p className="text-sm text-gray-500">{commit.message}</p>
+                  </div>
                 </div>
-              </div>
+              </a>
             </li>
           ))}
         </ul>
