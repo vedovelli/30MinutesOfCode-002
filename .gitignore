@@ -8,3 +8,5 @@ node_modules
 /public/build
 
 /app/tailwind.css
+
+/prisma/db.dev

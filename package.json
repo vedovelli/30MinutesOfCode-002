@@ -9,16 +9,19 @@
     "dev": "concurrently \"npm run dev:css\" \"remix dev\"",
     "dev:css": "tailwindcss -i ./app/styles/tailwind.css -o ./app/tailwind.css --watch",
     "postinstall": "remix setup node",
-    "start": "remix-serve build"
+    "start": "remix-serve build",
+    "db:seed": "node ./prisma/seed.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",
+    "@prisma/client": "^3.6.0",
     "@remix-run/react": "^1.0.6",
     "@remix-run/serve": "^1.0.6",
     "@tailwindcss/forms": "^0.4.0",
     "dotenv": "^10.0.0",
     "lodash": "^4.17.21",
+    "prisma": "^3.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "remix": "^1.0.6",
