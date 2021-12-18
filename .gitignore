@@ -9,4 +9,4 @@ node_modules
 
 /app/tailwind.css
 
-/prisma/db.dev
+/prisma/dev.db
