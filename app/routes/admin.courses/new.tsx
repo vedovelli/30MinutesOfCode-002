@@ -1,63 +1,44 @@
-import { ActionFunction, redirect } from "remix";
-import { db } from "~/utils/db.server";
+import { ActionFunction, redirect, useActionData } from "remix";
+import { ZodError } from "zod";
+import { extractValidationErrors, Validator } from "~/util";
+import { CourseForm } from "~/features/Admin/components/CourseForm";
+import { AdminApi } from "~/features/Admin";
 
-export const action: ActionFunction = async ({ request }) => {
-  console.log(await request.formData());
+interface FormFields {
+  name?: string;
+  description?: string;
+}
+
+export interface ActionData {
+  formErrors?: FormFields;
+  formValues?: FormFields;
+}
+
+export const action: ActionFunction = async ({
+  request,
+}): Promise<ActionData | Response | void> => {
+  const data: FormFields = Object.fromEntries(await request.formData());
+
+  try {
+    await AdminApi.createCourse(data);
+
+    return redirect(".");
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return {
+        formErrors: extractValidationErrors(error),
+        formValues: {
+          name: data.name as string,
+          description: data.description as string,
+        },
+      };
+    }
+
+    throw new Error(error.message);
+  }
 };
 
 export default function () {
-  return (
-    <form action="new" method="POST">
-      <div className="shadow sm:rounded-md sm:overflow-hidden">
-        <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
-          <div>
-            <h3 className="text-lg leading-6 font-medium text-gray-900">
-              Novo curso
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-6 gap-6">
-            <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="first-name"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Nome
-              </label>
-              <input
-                type="text"
-                name="name"
-                id="name"
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-            </div>
-
-            <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="last-name"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Descrição
-              </label>
-              <input
-                type="text"
-                name="description"
-                id="description"
-                autoComplete="family-name"
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-          <button
-            type="submit"
-            className="bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Save
-          </button>
-        </div>
-      </div>
-    </form>
-  );
+  const actionData = useActionData<ActionData>();
+  return <CourseForm actionData={actionData} />;
 }
