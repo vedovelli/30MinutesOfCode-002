@@ -20,4 +20,4 @@ export default function () {
 
 // export const ErrorBoundary = () => <h3>Whoops!</h3>;
 
-export const CatchBoundary = () => <h3>Not found!</h3>;
+// export const CatchBoundary = () => <h3>Not found!</h3>;

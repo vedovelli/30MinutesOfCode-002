@@ -4,23 +4,23 @@ import { extractValidationErrors, Validator } from "~/util";
 import { CourseForm } from "~/features/Admin/components/CourseForm";
 import { AdminApi } from "~/features/Admin";
 
-interface FormFields {
-  name?: string;
-  description?: string;
+export interface FormFields {
+  name: string;
+  description: string;
 }
 
 export interface ActionData {
-  formErrors?: FormFields;
+  formErrors?: Partial<FormFields>;
   formValues?: FormFields;
 }
 
 export const action: ActionFunction = async ({
   request,
 }): Promise<ActionData | Response | void> => {
-  const data: FormFields = Object.fromEntries(await request.formData());
+  const data = Object.fromEntries(await request.formData());
 
   try {
-    await AdminApi.createCourse(data);
+    await AdminApi.saveCourse(Validator.parse(data));
 
     return redirect(".");
   } catch (error) {
@@ -34,6 +34,7 @@ export const action: ActionFunction = async ({
       };
     }
 
+    // @ts-ignore
     throw new Error(error.message);
   }
 };
