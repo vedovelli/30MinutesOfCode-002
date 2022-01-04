@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm run build:css && remix build",
     "build:css": "tailwindcss -i ./app/styles/tailwind.css -o ./app/tailwind.css",
-    "dev": "concurrently \"npm run dev:css\" \"remix dev\"",
+    "dev": "concurrently \"node -r dotenv/config\" \"npm run dev:css\" \"remix dev\"",
     "dev:css": "tailwindcss -i ./app/styles/tailwind.css -o ./app/tailwind.css --watch",
     "postinstall": "remix setup node",
     "start": "remix-serve build",
@@ -15,28 +15,28 @@
   "dependencies": {
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",
-    "@prisma/client": "^3.6.0",
-    "@remix-run/react": "^1.0.6",
-    "@remix-run/serve": "^1.0.6",
+    "@prisma/client": "^3.7.0",
+    "@remix-run/react": "^1.1.1",
+    "@remix-run/serve": "^1.1.1",
     "@tailwindcss/forms": "^0.4.0",
     "dotenv": "^10.0.0",
     "lodash": "^4.17.21",
-    "prisma": "^3.6.0",
+    "prisma": "^3.7.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "remix": "^1.0.6",
+    "remix": "^1.1.1",
     "tiny-invariant": "^1.2.0",
     "zod": "^3.11.6"
   },
   "devDependencies": {
-    "@remix-run/dev": "^1.0.6",
+    "@remix-run/dev": "^1.1.1",
     "@types/lodash": "^4.14.178",
-    "@types/react": "^17.0.24",
+    "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.9",
-    "concurrently": "^6.4.0",
+    "concurrently": "^7.0.0",
     "faker": "^5.5.3",
-    "tailwindcss": "^3.0.2",
-    "typescript": "^4.1.2"
+    "tailwindcss": "^3.0.9",
+    "typescript": "^4.5.4"
   },
   "engines": {
     "node": ">=14"
