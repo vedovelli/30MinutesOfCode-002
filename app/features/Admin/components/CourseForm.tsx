@@ -8,7 +8,7 @@ export interface CourseFormProps {
 
 export function CourseForm({ actionData, course }: CourseFormProps) {
   return (
-    <form action="new" method="POST">
+    <form method="POST">
       <div className="shadow sm:rounded-md sm:overflow-hidden">
         <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
           <div>

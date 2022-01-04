@@ -1,6 +1,5 @@
 import { LoaderFunction, useLoaderData } from "remix";
-import { GithubApi, Types } from "~/features/github";
-import { Commits } from "~/features/Github/components/Commits";
+import { GithubApi, Types, Commits } from "~/features/Github";
 
 export const loader: LoaderFunction = async ({
   params,
