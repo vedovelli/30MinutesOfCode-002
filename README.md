@@ -2,26 +2,16 @@
 
 Este repositório contém uma aplicação desenvolvida com [Remix.run](https://remix.run) e oferece o código fonte criado nos vídeos.
 
-As instruções de instalação estão abaixo. O único cuidado que você precisa ter para que a aplicação rode sem problemas é comentar este trecho de código em `/app/features/Github/Github.api.ts`
+As instruções de instalação estão abaixo.
 
-```typescript
-const config = {
-  headers: {
-    accept: "application/vnd.github.v3+json",
-    // Authorization: `token ${secrets.GITHUB_API_TOKEN}`, // < esta linha deve ser comentada
-  },
-};
-```
+## Instalação
 
-Ou então [crie seu próprio token no Github](https://github.com/settings/tokens) e adicione num arquivo `secrets.ts` (precisa ser criado) na raiz do projeto!
-
-```typscript
-export const secrets = {
-  GITHUB_API_TOKEN: "ghp_seu token aqui",
-};
-```
-
-Neste caso mantenha o código em `/app/features/Github/Github.api.ts` intocado!
+- `yarn install`
+- Copiar `.env.example` para `.env` e atualizar, se necessário
+  - Caso queira fazer requisições autenticadas para a API do GitHub, [crie seu próprio token](https://github.com/settings/tokens) e adicione-o no arquivo `.env`
+  - Requisições sem autentição são permitidas, mas você pode sofrer rate-limit se fizer muitas em pouco tempo
+- `yarn db:seed`
+  - Quando solicitado, informe um nome à migração ou só aperte `Enter` para confirmar a operação
 
 ## Welcome to Remix!
 

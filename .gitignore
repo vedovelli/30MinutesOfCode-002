@@ -2,6 +2,7 @@
 secrets.ts
 node_modules
 .DS_Store
+yarn-error.log
 
 /.cache
 /build
@@ -10,3 +11,4 @@ node_modules
 /app/tailwind.css
 
 /prisma/dev.db
+/prisma/migrations

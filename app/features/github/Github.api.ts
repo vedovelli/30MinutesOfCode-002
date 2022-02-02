@@ -2,10 +2,12 @@ import invariant from "tiny-invariant";
 import pick from "lodash/pick";
 import { Types } from ".";
 
+const { GITHUB_API_TOKEN } = process.env;
+
 const config = {
   headers: {
     accept: "application/vnd.github.v3+json",
-    Authorization: `token ${process.env.GITHUB_API_TOKEN}`,
+    ...(GITHUB_API_TOKEN && { Authorization: `token ${GITHUB_API_TOKEN}` }),
   },
 };
 
